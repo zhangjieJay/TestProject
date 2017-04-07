@@ -1,0 +1,27 @@
+//
+//  YJPrefixHeader.pch
+//  YJAutoProject
+//
+//  Created by 张杰 on 2016/12/14.
+//  Copyright © 2016年 JayZhang. All rights reserved.
+//
+
+#ifndef YJPrefixHeader_pch
+#define YJPrefixHeader_pch
+
+
+#import "CUTool.h"
+#import "YJDefine.h"
+
+#import "YJNormalView.h"
+#import "YJBaseButton.h"
+#import "YJNormalLabel.h"
+#import "BaseScrollView.h"
+#import "YJNormalImageView.h"
+#import "YJProgressView.h"
+#import "YJNormalIndicatorView.h"
+#import "BaseTableView.h"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* YJPrefixHeader_pch */
