@@ -12,31 +12,37 @@
 #import <BaiduMapAPI_Map/BMKMapView.h>//地图视图
 #import <BaiduMapAPI_Location/BMKLocationService.h>//定位文件
 #import <BaiduMapAPI_Map/BMKMapComponent.h>//引入地图功能所有的头文件
-#import <BaiduMapAPI_Map/BMKPolygon.h>
+#import <BaiduMapAPI_Map/BMKPolygon.h>//多边形覆盖物
+#import <BaiduMapAPI_Map/BMKCircle.h>//园
+#import <BaiduMapAPI_Map/BMKArcline.h>//圆弧
+
 
 
 
 static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
 
-@interface BDMapView()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKAnnotation>
+@interface BDMapView()<BMKMapViewDelegate,BMKLocationServiceDelegate>
 
 @property(nonatomic,strong)BMKLocationService * localService;
 
 @property(nonatomic,strong)BMKMapView * mapView;
 
 @property(nonatomic,strong)BMKPointAnnotation * annotation;
+@property(nonatomic,strong)BMKCircle * circle;
+@property(nonatomic,strong)UIView * infoView;
 
-//@property(nonatomic,strong)BMKAnnotationView * annotationView;
+
+@property(nonatomic,assign)CLLocationCoordinate2D userLocation;
 
 
 @end
 //104.050858,30.644178
 @implementation BDMapView{
 
-//    BMKClusterManager *_clusterManager;//点聚合管理类
-    
-    //初始化点聚合管理类
-    
+
+    CGRect hideRect;
+    CGRect showRect;
+
 
 }
 
@@ -54,8 +60,6 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
     if (self) {
         [self addSubview: self.mapView];
         [self.localService startUserLocationService];
-//        _clusterManager = [[BMKClusterManager alloc] init];
-
     }
     return self;
 }
@@ -66,7 +70,7 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
         _mapView = [[BMKMapView alloc]initWithFrame:self.bounds];
         _mapView.delegate =self;
         _mapView.showsUserLocation = YES;//显示用户当前定位
-        _mapView.zoomLevel = 15.f;//初始化的缩放比例
+        _mapView.zoomLevel = 17.5f;//初始化的缩放比例
         _mapView.rotateEnabled = NO; //设置是否可以旋转
         _mapView.showMapScaleBar = YES;//显示比例尺
         _mapView.showMapPoi = YES;
@@ -85,16 +89,23 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
 
     return _localService;
 }
-//-(BMKAnnotationView *)annotationView{
-//
-//    if (!_annotationView) {
-//        _annotationView = [[BMKAnnotationView alloc]initWithAnnotation:self reuseIdentifier:reuseIdentifier];
-//        
-//    }
-//
-//    return _annotationView;
-//
-//}
+
+-(UIView *)infoView{
+
+    if (!_infoView) {
+        CGFloat height = 100.f;
+        CGFloat y = CGRectGetHeight(self.mapView.frame);
+        _infoView = [[UIView alloc]initWithFrame:CGRectMake(0, y, YJ_SCREEN_WIDTH, 0)];
+        _infoView.backgroundColor = [UIColor redColor];
+        hideRect = _infoView.frame;
+        showRect = hideRect;
+        showRect.size.height = height;
+        showRect.origin.y = y - height;
+        [self addSubview:_infoView];
+    }
+    return _infoView;
+}
+
 
 
 -(void)viewWillAppear{
@@ -125,7 +136,10 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
 -(void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation{
     [self.mapView updateLocationData:userLocation];//刷新用户位置大头针
     [self.mapView setCenterCoordinate:userLocation.location.coordinate animated:YES];//定位成功以后设置中心店
+    self.userLocation = userLocation.location.coordinate;
     [self.localService stopUserLocationService];//定位成功以后停止定位
+
+
 }
 
 - (void)didFailToLocateUserWithError:(NSError *)error{//定位失败
@@ -138,12 +152,31 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
     self.mapView.compassPosition = CGPointMake(0, 300);
     [self.mapView setCompassImage:[UIImage imageNamed:@"pig.jpeg"]];
 }
+- (void)mapView:(BMKMapView *)mapView onDrawMapFrame:(BMKMapStatus*)status{
 
+    if (status.fLevel >= 17.5f) {
+        //定位后画圆
+        if (self.circle) {
+            [self.mapView removeOverlay:self.circle];
+        }
+        CLLocationDistance dis = 200.f;
+        BMKCircle * circle = [BMKCircle circleWithCenterCoordinate:self.userLocation radius:dis];
+        [self.mapView addOverlay:circle];
+        self.circle = circle;
+    }else{
+        if (self.circle) {
+            [self.mapView removeOverlay:self.circle];
+        }
+    }
+
+
+}
 //点击地图标注物时调用
 -(void)mapView:(BMKMapView *)mapView onClickedMapPoi:(BMKMapPoi *)mapPoi{
     
     if (self.annotation) {
         [self.mapView removeAnnotation:self.annotation ];
+        self.annotation = nil;
     }
     
     BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
@@ -157,40 +190,34 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
 - (void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view{
 
     
-
+    [self showInfoViewWithAnnotationView:view];
 
 }
 
 -(void)mapView:(BMKMapView *)mapView onClickedMapBlank:(CLLocationCoordinate2D)coordinate{
 
-
+    if (self.annotation) {
+        [self.mapView removeAnnotation:self.annotation];
+        self.annotation = nil;
+    }
     
 
-//    104.050858,30.644178
-    
-    // 添加多边形覆盖物
-    CLLocationCoordinate2D coords[3] = {0};
-    coords[0].latitude = 30.604178;
-    coords[0].longitude = 104.020858;
-    coords[1].latitude = 30.634178;
-    coords[1].longitude = 104.040858;
-    coords[2].latitude = 30.664178;
-    coords[2].longitude = 104.040858;
-    
-    BMKPolygon* polygon = [BMKPolygon polygonWithCoordinates:coords count:3];
-    [self.mapView addOverlay:polygon];
+//    // 添加多边形覆盖物
+//    CLLocationCoordinate2D coords[3] = {0};
+//    coords[0].latitude = 30.604178;
+//    coords[0].longitude = 104.020858;
+//    coords[1].latitude = 30.634178;
+//    coords[1].longitude = 104.040858;
+//    coords[2].latitude = 30.664178;
+//    coords[2].longitude = 104.040858;
+//    
+//    BMKPolygon* polygon = [BMKPolygon polygonWithCoordinates:coords count:3];
+//    [self.mapView addOverlay:polygon];
+//    
     
 
     
     
-    //向点聚合管理类中添加标注
-//    for (NSInteger i = 0; i < 20; i++) {
-//        double lat =  (arc4random() % 100) * 0.001f;
-//        double lon =  (arc4random() % 100) * 0.001f;
-//        BMKClusterItem *clusterItem = [[BMKClusterItem alloc] init];
-//        clusterItem.coor = CLLocationCoordinate2DMake(coordinate.latitude + lat, coordinate.longitude + lon);
-//        [_clusterManager addClusterItem:clusterItem];
-//    }
 
 }
 
@@ -202,6 +229,7 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
         newAnnotationView.pinColor = BMKPinAnnotationColorGreen;
         newAnnotationView.animatesDrop = NO;// 设置该标注点动画显示
         newAnnotationView.canShowCallout = YES;
+        newAnnotationView.image = [UIImage imageNamed:@"NB_Location"];
         newAnnotationView.draggable = YES;
         return newAnnotationView;
     }
@@ -216,6 +244,13 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
         polygonView.lineWidth = 1.f;
         
         return polygonView;
+    }else if ([overlay isKindOfClass:[BMKCircle class]]){
+    
+        BMKCircleView * circleView = [[BMKCircleView alloc] initWithCircle:overlay];
+        circleView.strokeColor = [[UIColor purpleColor] colorWithAlphaComponent:1];
+        circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+        circleView.lineWidth = 0.5f;
+        return circleView;
     }
     return nil;
 }
@@ -224,5 +259,20 @@ static NSString * reuseIdentifier = @"Annotation_reuseIdentifier";
 
 
 }
+- (void)mapView:(BMKMapView *)mapView onClickedBMKOverlayView:(BMKOverlayView *)overlayView{
+
+
+
+}
+
+-(void)showInfoViewWithAnnotationView:(BMKAnnotationView *)annotationView{
+
+    
+    [UIView animateWithDuration:.5f animations:^{
+        self.infoView.frame = showRect;
+    }];
+
+}
+
 
 @end
