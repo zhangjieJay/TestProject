@@ -37,7 +37,7 @@
 /**
  *  按照一定尺寸缩放和裁剪图片
  *
- *  @param size 目标尺寸
+ *  @param targetSize 目标尺寸
  *
  *  @return 处理后后的图片
  */
@@ -49,8 +49,8 @@
  *
  *  @param memory 目标大小，单位KB
  *
- *  @return 压缩后的图片
  */
+
 - (void)compressImageWithMemory:(NSInteger)memory
                        complete:(void(^)(UIImage *image, NSData *data))complete;
 

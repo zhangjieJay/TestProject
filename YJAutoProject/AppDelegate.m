@@ -9,7 +9,24 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 
-@interface AppDelegate ()
+
+#import <BaiduMapAPI_Base/BMKBaseComponent.h>//引入base相关所有的头文件
+#import <BaiduMapAPI_Map/BMKMapComponent.h>//引入地图功能所有的头文件
+//#import <BaiduMapAPI_Search/BMKSearchComponent.h>//引入检索功能所有的头文件
+//#import <BaiduMapAPI_Cloud/BMKCloudSearchComponent.h>//引入云检索功能所有的头文件
+//#import <BaiduMapAPI_Location/BMKLocationComponent.h>//引入定位功能所有的头文件
+//#import <BaiduMapAPI_Utils/BMKUtilsComponent.h>//引入计算工具所有的头文件
+//#import <BaiduMapAPI_Radar/BMKRadarComponent.h>//引入周边雷达功能所有的头文件
+//#import <BaiduMapAPI_Map/BMKMapView.h>//只引入所需的单个头文件
+
+
+
+#define BAIDU_APIKEY @"ixwTe6j3FUd0TFvhvk8fI7w0A8C1HMVM"
+
+
+@interface AppDelegate (){
+    BMKMapManager* _mapManager;
+}
 
 @end
 
@@ -24,9 +41,17 @@
     ViewController * vc = [[ViewController alloc]init];
     UINavigationController * navc = [[UINavigationController alloc]initWithRootViewController:vc];
     self.window.rootViewController = navc;
-    self.window.rootViewController = vc;
+//    self.window.rootViewController = vc;
 
     [self.window makeKeyAndVisible];
+    
+    _mapManager = [[BMKMapManager alloc]init];
+    // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
+    BOOL ret = [_mapManager start:BAIDU_APIKEY  generalDelegate:nil];
+    if (!ret) {
+        NSLog(@"manager start failed!");
+    }
+    
     return YES;
 }
 

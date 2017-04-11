@@ -15,6 +15,8 @@
 #import "NetTool.h"
 #import "JMAnimationButton.h"
 
+#import "MapViewController.h"
+
 
 #define MULITTHREEBYTEUTF16TOUNICODE(x,y) (((((x ^ 0xD800) << 2) | ((y ^ 0xDC00) >> 8)) << 8) | ((y ^ 0xDC00) & 0xFF)) + 0x10000
 
@@ -28,28 +30,68 @@
 
 @end
 
-@implementation ViewController
+@implementation ViewController{
+
+    UIWebView *_webView;
+    NJKWebViewProgressView *_webViewProgressView;
+    NJKWebViewProgress *_webViewProgress;
+
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    JMAnimationButton * button = [JMAnimationButton buttonWithFrame:CGRectMake(0, 0, 100, 30)];
-    button.backgroundColor = [UIColor greenColor];
-    [button setTitle:@"你好" forState:UIControlStateNormal];
+    self.view.backgroundColor = [UIColor greenColor];
 
-    [self.view addSubview:button];
-    [button startAnimation];
+
+
     
     
-    [NSThread detachNewThreadWithBlock:^{
-        sleep(4);
-        
-        [button stopAnimation];
-    }];
- 
+    
+    
+    
+//    MBProgressHUD * hud = [[MBProgressHUD alloc]initWithView:self.view];
+//    hud.labelText = @"登录中...";
+//    hud.customView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"YJ_Failed_Face"]];
+//    hud.mode = MBProgressHUDModeCustomView;
+//    [self.view addSubview:hud];
+//    [hud show:YES];
+//    
+    
+    
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+//    [self.view addSubview:view];
+    
+    
+    
+    
+    
+//    NSString * sOrigin = @"sOrigin";
+//    NSString * sCopy = [sOrigin copy];
+//    NSString * sMucopy = [sOrigin mutableCopy];
+//    
+//    
+//    NSLog(@"值sOrigin = %p,sCopy = %p,sMucopy = %p",sOrigin,sCopy,sMucopy);
+//          //值sOrigin = 0x108042870,sCopy = 0x108042870,sMucopy = 0x600000077180
+//
+//    NSLog(@"地址sOrigin = %p,sCopy = %p,sMucopy = %p",&sOrigin,&sCopy,&sMucopy);
+//          //地址sOrigin = 0x7fff57bdd8f8,sCopy = 0x7fff57bdd8f0,sMucopy = 0x7fff57bdd8e8
+    
+//    JMAnimationButton * button = [JMAnimationButton buttonWithFrame:CGRectMake(0, 0, 100, 30)];
+//    button.backgroundColor = [UIColor greenColor];
+//    [button setTitle:@"你好" forState:UIControlStateNormal];
+//
+//    [self.view addSubview:button];
+//    [button startAnimation];
+//    
+//    
+//    [NSThread detachNewThreadWithBlock:^{
+//        sleep(4);
+//        
+//        [button stopAnimation];
+//    }];
+// 
     
 //    NSString * sStatus = [NetTool getNetStatus];
     
@@ -273,13 +315,23 @@
 //}
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    YJPhotoListViewController * listVC = [YJPhotoListViewController new];
-    UINavigationController * nave = [[UINavigationController alloc]initWithRootViewController:listVC];
-    [self presentViewController:nave animated:NO completion:^{
-        YJAlbumPickerViewController * picVC = [YJAlbumPickerViewController new];
-        [listVC.navigationController pushViewController:picVC animated:YES];
-    }];
+//    VVBlurViewController * vc = [[VVBlurViewController alloc]init];
     
+    MapViewController * vc = [[MapViewController alloc]init];;
+
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    
+    
+    
+//    YJPhotoListViewController * listVC = [YJPhotoListViewController new];
+//    UINavigationController * nave = [[UINavigationController alloc]initWithRootViewController:listVC];
+//    [self presentViewController:nave animated:NO completion:^{
+//        YJAlbumPickerViewController * picVC = [YJAlbumPickerViewController new];
+//        [listVC.navigationController pushViewController:picVC animated:YES];
+//    }];
+//    
 
 //
 //    [YJProgressView showStatusWithText:@"请稍后..."];
