@@ -925,6 +925,122 @@
     
     return isReach;
 }
+
+
++ (UIColor *)getColorWithColorType:(NSInteger)colorType{
+
+    return [CUTool getColorWithColorType:colorType alph:1];
+
+}
+
+
++ (UIColor *)getColorWithColorType:(NSInteger)colorType alph:(CGFloat)alp{
+    
+    CGFloat red;
+    CGFloat gre;
+    CGFloat blu;
+    
+    switch (colorType) {
+            
+        case 410://项目主调色
+            red = 243.f;
+            gre = 100.f;
+            blu = 44.f;
+            break;
+        case 411://项目主调色
+            red = 230.f;
+            gre = 120.f;
+            blu = 44.f;
+            break;
+        case 412://项目主调色
+            red = 243.f;
+            gre = 140.f;
+            blu = 44.f;
+            break;
+        case 413://项目主调色
+            red = 243.f;
+            gre = 160.f;
+            blu = 44.f;
+            break;
+        case 414://项目主调色
+            red = 243.f;
+            gre = 180.f;
+            blu = 44.f;
+            break;
+        case 415://项目主调色
+            red = 243.f;
+            gre = 200.f;
+            blu = 44.f;
+            break;
+        case 416://项目主调色
+            red = 243.f;
+            gre = 220.f;
+            blu = 44.f;
+            break;
+        case 417://项目主调色
+            red = 243.f;
+            gre = 240.f;
+            blu = 44.f;
+            break;
+            
+        default:
+            red = 255.f;
+            gre = 255.f;
+            blu = 255.f;
+            break;
+    }
+    
+    return [UIColor colorWithRed:red/255.f green:gre/255.f blue:blu/255.f alpha:alp];
+    
+}
+
++(UIFont *)getFont:(CGFloat)font{
+    return [CUTool getFont:font isBold:NO];
+}
+
++(UIFont *)getFont:(CGFloat)font isBold:(BOOL)isBold{
+    
+    UIFont * fontNormal = [UIFont systemFontOfSize:font];
+    if (isBold) {
+        fontNormal = [UIFont boldSystemFontOfSize:font];
+        
+    }else{
+        fontNormal = [UIFont systemFontOfSize:font];
+        
+    }
+    return fontNormal;
+}
+
+
++ (UIImage *)addText:(NSString *)text toImage:(UIImage *)image font:(UIFont *)font color:(UIColor *)color
+{
+
+    CGSize imageSize = image.size;
+    UIGraphicsBeginImageContextWithOptions (imageSize, NO , 0.0 );
+    [image drawAtPoint : CGPointMake(0,0)];
+    
+    // 获得一个位图图形上下文
+    CGContextRef context= UIGraphicsGetCurrentContext();
+    CGContextDrawPath (context, kCGPathStroke);
+    
+    CGSize size = [CUTool autoSizeWithString:text font:font width:imageSize.width height:imageSize.height];
+    CGRect rect = CGRectMake((imageSize.width - size.width)/2.f, (imageSize.height - size.height)/2.f, size.width, size.height);
+    
+    //画文字
+    [text drawInRect:rect withAttributes:@{NSFontAttributeName:font,NSForegroundColorAttributeName :color}];
+    
+    // 返回绘制的新图形
+    UIImage *newImage= UIGraphicsGetImageFromCurrentImageContext ();
+    UIGraphicsEndImageContext ();
+    return newImage;
+    
+
+
+
+
+}
+
+
 @end
 
 

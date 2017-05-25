@@ -393,6 +393,13 @@ typedef enum {
 //网络连接是否可用
 +(BOOL)CanConnectTheInterNet;
 
++ (UIColor *)getColorWithColorType:(NSInteger)colorType;
++(UIFont *)getFont:(CGFloat)font;
+
+
+
+
++ (UIImage *)addText:(NSString *)text toImage:(UIImage *)image font:(UIFont *)font color:(UIColor *)color;
 
 
 

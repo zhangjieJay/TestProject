@@ -1,0 +1,71 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - BaiduMapKit (3.0.0)
+  - DZNEmptyDataSet (1.8.1)
+  - IQKeyboardManager (4.0.6)
+  - JGProgressHUD (1.4)
+  - JSONModel (1.0.2)
+  - LCLoadingHUD (1.0.6)
+  - MBProgressHUD (0.9.2)
+  - MJRefresh (3.1.12)
+  - NJKWebViewProgress (0.2.3):
+    - NJKWebViewProgress/Core (= 0.2.3)
+    - NJKWebViewProgress/ProgressView (= 0.2.3)
+  - NJKWebViewProgress/Core (0.2.3)
+  - NJKWebViewProgress/ProgressView (0.2.3)
+  - SDAutoLayout (2.1.7)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - VVBlurPresentation (0.1.1)
+  - XMLReader (0.0.2)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.1.0)
+  - BaiduMapKit
+  - DZNEmptyDataSet (~> 1.8.1)
+  - IQKeyboardManager (~> 4.0.6)
+  - JGProgressHUD (~> 1.4)
+  - JSONModel (~> 1.0.2)
+  - LCLoadingHUD (~> 1.0.6)
+  - MBProgressHUD (~> 0.9.2)
+  - MJRefresh (~> 3.1.12)
+  - NJKWebViewProgress (~> 0.2.3)
+  - SDAutoLayout (~> 2.1.7)
+  - SDWebImage (~> 3.8.2)
+  - VVBlurPresentation (~> 0.1.1)
+  - XMLReader (~> 0.0.2)
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  BaiduMapKit: de2a726d5296d6b2dc0e974b683af73153608dcd
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  IQKeyboardManager: c52debb1967799ae7addb98eab0cf328083a874f
+  JGProgressHUD: 1617b0940cf80bb53e8f7d6f0fd69252ea45d6d4
+  JSONModel: 6ffcb4ffa3659c9e9a2e5d45d6c7705bab187c03
+  LCLoadingHUD: 8b20d4c10d47c3d4a64978cb966532788c183588
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
+  SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  VVBlurPresentation: 62c0a9d6ac22f9bed99c0c5735e7eae8156bc618
+  XMLReader: c7e54b707c368e2fa545d8313276b4de13a36ff5
+
+PODFILE CHECKSUM: 5e7f11327c14c437671ded02826aed929d0c7d87
+
+COCOAPODS: 1.2.0.beta.1
